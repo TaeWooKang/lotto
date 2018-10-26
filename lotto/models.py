@@ -1,7 +1,11 @@
 from django.db import models
 from django.utils import timezone
 import random
-# Create your models here.
+
+class Location(models.Model):
+    lat = models.FloatField()
+    lng = models.FloatField()
+    name = models.CharField(max_length=30)
 
 class GuessNumbers(models.Model):
     name = models.CharField(max_length=24)
@@ -10,23 +14,33 @@ class GuessNumbers(models.Model):
     num_lotto = models.IntegerField(default=5)
     update_date = models.DateTimeField()
 
-
     def generate(self):
         self.lottos = ""
-
         origin = list(range(1, 46))
-        for _ in range(0, self.num_lotto):
+        for a in range(0, self.num_lotto):
             random.shuffle(origin)
             guess = origin[:6]
             guess.sort()
             self.lottos += str(guess) + '\n'
-            self.update_date = timezone.now()
+        self.update_date = timezone.now()
         self.save()
 
-    def __str__(self):
-        return '%s %s' % (self.name, self.text)
+class Member(models.Model):
+    id = models.CharField(
+        max_length=20, primary_key=True)
+    pw = models.CharField(
+        max_length=20)
+    name = models.CharField(max_length=20)
 
-class Location(models.Model):
-    lat = models.FloatField()
-    lng = models.FloatField()
-    name = models.CharField(max_length=30)
+
+
+
+
+
+
+
+
+
+
+
+
